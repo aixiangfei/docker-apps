@@ -1,0 +1,18 @@
+version: '3.8'
+
+networks:
+  backend:
+    external: true
+
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./conf.d/:/etc/nginx/conf.d/
+      - /work/projects/:/work/projects/
+    networks:
+      backend:
+        aliases:
+          - docker-nginx
+    ports:
+      - 8088:80

@@ -1,0 +1,41 @@
+version: '3.8'
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
+
+volumes:
+  postgres:
+    name: postgres
+    driver: local
+  pgadmin:
+    name: pgadmin
+    driver: local
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 123456
+    networks:
+      backend:
+        aliases:
+          - docker-postgres
+
+  pgadmin4:
+    image: dpage/pgadmin4
+    ports:
+      - 15432:80
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - frontend
+      - backend
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 2792938834@qq.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+      PGADMIN_LISTEN_ADDRESS: 0.0.0.0

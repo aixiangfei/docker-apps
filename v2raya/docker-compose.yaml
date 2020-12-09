@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  v2raya:
+    image: mzz2017/v2raya:1.0.1
+    container_name: v2raya
+    volumes:
+      - ./v2raya:/etc/v2raya
+    privileged: true
+    network_mode: host

@@ -1,0 +1,34 @@
+version: '3.8'
+
+networks:
+  frontend:
+    name: frontend
+    driver: bridge
+  backend:
+    name: backend
+    driver: bridge
+
+services:
+  traefik-proxy:
+    image: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesResolvers.myresolver.acme.storage=acme.json"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=2792938834@qq.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "80:80"
+      # - "8080:8080"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - "./letsencrypt:/letsencrypt"
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - frontend
