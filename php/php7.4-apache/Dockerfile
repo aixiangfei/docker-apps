@@ -1,5 +1,7 @@
 FROM php:7.4-apache
 
+ARG COMPOSER_VERSION
+
 # 设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -14,6 +16,7 @@ deb http://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main cont
 
 # 安装核心扩展
 RUN apt-get update && apt-get install -y \
+        wget \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
@@ -32,6 +35,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install redis memcached \
     && docker-php-ext-enable redis memcached
+
+# 安装composer
+RUN wget https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar -O /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
 
 RUN apt-get install -y \
         iputils-ping \

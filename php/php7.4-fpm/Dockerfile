@@ -1,5 +1,7 @@
 FROM php:7.4-fpm
 
+ARG COMPOSER_VERSION
+
 # 设置时区
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -15,6 +17,7 @@ deb http://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main non-free c
 
 # 安装依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        wget \
         libzip-dev \
         libpng-dev \
         libjpeg-dev \
@@ -43,6 +46,10 @@ RUN set -eux; \
 
     # 安装bcmath
     docker-php-ext-install bcmath;
+
+# 安装composer
+RUN wget https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar -O /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
 
 # 清理缓存和无用软件
 RUN rm -rf /var/lib/apt/lists/* && apt-get -y autoclean && apt-get -y clean && apt-get -y autoremove
