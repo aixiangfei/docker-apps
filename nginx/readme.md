@@ -1,6 +1,9 @@
+laravel 配置示例：
+
+```
 server {
     listen 80;
-    root /work/projects/laravel8-learn/public;
+    root /work/projects/laravel/public;
     index index.html index.htm index.php;
     server_name laravel.test;
 
@@ -19,3 +22,4 @@ server {
         include fastcgi_params;
     }
 }
+```

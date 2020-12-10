@@ -10,7 +10,7 @@ services:
     volumes:
       - /work/projects/:/work/projects/
     ports:
-      - 8080:8080
+      - 8000:8000
     networks:
       - backend
     tty: true
